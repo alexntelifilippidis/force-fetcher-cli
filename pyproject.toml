@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling>=1.21.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "force-fetcher-cli"
+version = "0.1.0"
+description = "🚀 Harness the power of the Force to fetch Star Wars data straight from the galaxy far, far away — all from your terminal! May the CLI be with you. 🌌✨"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Alex D" }]
+requires-python = ">=3.13"
+
+dependencies = [
+  "typer==0.16.0",     # CLI framework
+  "requests==2.32.2",        # HTTP requests
+  "colorama==0.4.6",
+  "colorlog==6.9.0",# Terminal color output
+  "mypy",        # Static type checker
+]
+
+[project.scripts]
+swapi = "swapi.__main__:main"
+
+[tool.hatch.envs.default]
+python = "3.13"
+
+[tool.hatch.build.targets.wheel]
+packages = ["swapi"]
+
+[tool.hatch.envs.dev]
+extra-dependencies = [
+  "mypy==1.14.1",
+  "types-requests-oauthlib",
+  "pytest",
+  "pytest-cov",
+  "pytest-mock",
+  "ruff==0.9.2",
+]
+
+[tool.hatch.envs.dev.scripts]
+check = "mypy --install-types --non-interactive swapi tests"
+
+
+[tool.ruff]
+lint.ignore = ["T201", "G004", "FBT001", "PLW0603", "A002", "FBT002", "RET505"]
+
+[tool.mypy]
+ignore_missing_imports = true              # It's the default, but it's needed here for pre-commit.
+strict = true
+namespace_packages = false
+enable_error_code = ["ignore-without-code"]
